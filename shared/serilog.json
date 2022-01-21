@@ -2,8 +2,9 @@
   "Serilog": {
     "Using": [ "Serilog.Sinks.Console" ],
     "MinimumLevel": {
-      "Default": "Debug",
+      "Default": "Error",
       "Override": {
+        "Skoruba": "Information",
         "Microsoft": "Information",
         "System": "Error"
       }

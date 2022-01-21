@@ -1,33 +1,37 @@
 ﻿{
-    "Serilog": {
-        "MinimumLevel": {
-            "Default": "Error",
-            "Override": {
-                "Skoruba": "Information"
-            }
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.Console" ],
+    "MinimumLevel": {
+      "Default": "Error",
+      "Override": {
+        "Skoruba": "Information",
+        "Microsoft": "Information",
+        "System": "Error"
+      }
+    },
+    "WriteTo": [
+      {
+        "Args": {
+          "outputTemplate": "[{Timestamp:o}][{Level:u4}][{ThreadId}][{SourceContext}] {Message}{NewLine}{Exception}"
         },
-        "WriteTo": [
-            {
-                "Name": "Console"
-            },
-            {
-                "Name": "File",
-                "Args": {
-                    "path": "Log/skoruba_admin.txt",
-                    "rollingInterval": "Day"
-                }
-            },
-            {
-                "Name": "MSSqlServer",
-                "Args": {
-                    "connectionString": "Server=(localdb)\\mssqllocaldb;Database=IdentityServerAdmin;Trusted_Connection=True;MultipleActiveResultSets=true",
-                    "tableName": "Log",
-                    "columnOptionsSection": {
-                        "addStandardColumns": [ "LogEvent" ],
-                        "removeStandardColumns": [ "Properties" ]
-                    }
-                }
-            }
-        ]
+        "Name": "Console"
+      },
+      {
+        "Args": {
+          "buffered": true,
+          "flushToDiskInterval": 15,
+          "outputTemplate": "[{Timestamp:o}][{Level:u4}][{ThreadId}][{SourceContext}] {Message}{NewLine}{Exception}",
+          "pathFormat": "..//Logs//Api-{Date}.txt",
+          "retainedFileCountLimit": 3,
+          "textFormatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
+        },
+        "Name": "RollingFile"
+      }
+    ],
+    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
+    "Properties": {
+      "Product": "Admin",
+      "Env": ""
     }
+  }
 }
