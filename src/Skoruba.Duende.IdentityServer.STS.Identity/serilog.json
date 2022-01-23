@@ -17,21 +17,13 @@
         "Name": "Console"
       },
       {
+        "Name": "File",
         "Args": {
-          "buffered": true,
-          "flushToDiskInterval": 15,
-          "outputTemplate": "[{Timestamp:o}][{Level:u4}][{ThreadId}][{SourceContext}] {Message}{NewLine}{Exception}",
-          "pathFormat": "..//Logs//SSO-{Date}.txt",
-          "retainedFileCountLimit": 3,
-          "textFormatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
-        },
-        "Name": "RollingFile"
+          "path": "../Log/SSO.txt",
+          "rollingInterval": "Day",
+          "outputTemplate": "[{Timestamp:o}][{Level:u4}][{ThreadId}][{SourceContext}] {Message}{NewLine}{Exception}"
+        }
       }
-    ],
-    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
-    "Properties": {
-      "Product": "Admin",
-      "Env": ""
-    }
+    ]
   }
 }
