@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Exceptionless;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,8 +15,12 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity
         {
             var configuration = GetConfiguration(args);
 
+            var exceptionLessApiKey = configuration.GetValue<string>("ExceptionLess:ApiKey");
+            ExceptionlessClient.Default.Startup(exceptionLessApiKey);
+
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
+                .WriteTo.Exceptionless(b => b.AddTags("SSO"))
                 .CreateLogger();
             try
             {

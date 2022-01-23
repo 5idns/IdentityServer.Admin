@@ -14,6 +14,7 @@ using Skoruba.Duende.IdentityServer.Admin.EntityFramework.Shared.DbContexts;
 using Skoruba.Duende.IdentityServer.Admin.EntityFramework.Shared.Entities.Identity;
 using Skoruba.Duende.IdentityServer.Admin.EntityFramework.Shared.Helpers;
 using Skoruba.Duende.IdentityServer.Shared.Configuration.Helpers;
+using Exceptionless;
 
 namespace Skoruba.Duende.IdentityServer.Admin
 {
@@ -25,8 +26,12 @@ namespace Skoruba.Duende.IdentityServer.Admin
         {
             var configuration = GetConfiguration(args);
 
+            var exceptionLessApiKey = configuration.GetValue<string>("ExceptionLess:ApiKey");
+            ExceptionlessClient.Default.Startup(exceptionLessApiKey);
+
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
+                .WriteTo.Exceptionless(b => b.AddTags("OAuth"))
                 .CreateLogger();
 
             try
