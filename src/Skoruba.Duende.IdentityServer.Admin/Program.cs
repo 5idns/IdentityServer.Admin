@@ -26,7 +26,9 @@ namespace Skoruba.Duende.IdentityServer.Admin
         {
             var configuration = GetConfiguration(args);
 
+            var exceptionLessServerUrl = configuration.GetValue<string>("ExceptionLess:ServerUrl");
             var exceptionLessApiKey = configuration.GetValue<string>("ExceptionLess:ApiKey");
+            ExceptionlessClient.Default.Configuration.ServerUrl = exceptionLessServerUrl;
             ExceptionlessClient.Default.Startup(exceptionLessApiKey);
 
             Log.Logger = new LoggerConfiguration()
