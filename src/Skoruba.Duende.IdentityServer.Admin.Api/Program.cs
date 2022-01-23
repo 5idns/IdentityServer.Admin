@@ -67,8 +67,6 @@ namespace Skoruba.Duende.IdentityServer.Admin.Api
             configurationBuilder.AddCommandLine(args);
             configurationBuilder.AddEnvironmentVariables();
 
-            configurationBuilder.AddExceptionless("");
-
             return configurationBuilder.Build();
         }
 
