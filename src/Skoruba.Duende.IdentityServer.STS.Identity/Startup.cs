@@ -13,6 +13,7 @@ using Skoruba.Duende.IdentityServer.STS.Identity.Configuration;
 using Skoruba.Duende.IdentityServer.STS.Identity.Configuration.Constants;
 using Skoruba.Duende.IdentityServer.STS.Identity.Configuration.Interfaces;
 using Skoruba.Duende.IdentityServer.STS.Identity.Helpers;
+using Exceptionless;
 
 namespace Skoruba.Duende.IdentityServer.STS.Identity
 {
@@ -29,6 +30,7 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddExceptionless(Configuration);
             var rootConfiguration = CreateRootConfiguration();
             services.AddSingleton(rootConfiguration);
             // Register DbContexts for IdentityServer and Identity
