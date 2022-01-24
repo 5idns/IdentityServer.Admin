@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
-using Exceptionless;
+using NLog.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using Skoruba.Duende.IdentityServer.Shared.Configuration.Helpers;
 
 namespace Skoruba.Duende.IdentityServer.STS.Identity
@@ -15,15 +14,6 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity
         {
             var configuration = GetConfiguration(args);
 
-            var exceptionLessServerUrl = configuration.GetValue<string>("Exceptionless:ServerUrl");
-            var exceptionLessApiKey = configuration.GetValue<string>("Exceptionless:ApiKey");
-            ExceptionlessClient.Default.Configuration.ServerUrl = exceptionLessServerUrl;
-            ExceptionlessClient.Default.Startup(exceptionLessApiKey);
-
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .WriteTo.Exceptionless(exceptionLessApiKey, exceptionLessServerUrl, additionalOperation: b => b.AddTags("SSO"))
-                .CreateLogger();
             try
             {
                 DockerHelpers.ApplyDockerConfiguration(configuration);
@@ -32,11 +22,11 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly");
+                Console.WriteLine("Host terminated unexpectedly");
+                Console.WriteLine(ex.ToString());
             }
             finally
             {
-                Log.CloseAndFlush();
             }
         }
 
@@ -48,9 +38,7 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("serilog.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"serilog.{environment}.json", optional: true, reloadOnChange: true);
+                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 
             if (isDevelopment)
             {
@@ -73,11 +61,7 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity
                  {
                      var configurationRoot = configApp.Build();
 
-                     configApp.AddJsonFile("serilog.json", optional: true, reloadOnChange: true);
-
                      var env = hostContext.HostingEnvironment;
-
-                     configApp.AddJsonFile($"serilog.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
                      if (env.IsDevelopment())
                      {
@@ -89,16 +73,14 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity
                      configApp.AddEnvironmentVariables();
                      configApp.AddCommandLine(args);
                  })
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddNLog("NLog.config");
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureKestrel(options => options.AddServerHeader = false);
                     webBuilder.UseStartup<Startup>();
-                })
-                .UseSerilog((hostContext, loggerConfig) =>
-                {
-                    loggerConfig
-                        .ReadFrom.Configuration(hostContext.Configuration)
-                        .Enrich.WithProperty("ApplicationName", hostContext.HostingEnvironment.ApplicationName);
                 });
     }
 }

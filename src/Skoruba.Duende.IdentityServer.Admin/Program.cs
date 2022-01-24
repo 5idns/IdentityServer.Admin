@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using Skoruba.Duende.IdentityServer.Admin.EntityFramework.Configuration.Configuration;
 using Skoruba.Duende.IdentityServer.Admin.EntityFramework.Shared.DbContexts;
 using Skoruba.Duende.IdentityServer.Admin.EntityFramework.Shared.Entities.Identity;
 using Skoruba.Duende.IdentityServer.Admin.EntityFramework.Shared.Helpers;
 using Skoruba.Duende.IdentityServer.Shared.Configuration.Helpers;
-using Exceptionless;
+using NLog.Extensions.Logging;
 
 namespace Skoruba.Duende.IdentityServer.Admin
 {
@@ -24,17 +23,7 @@ namespace Skoruba.Duende.IdentityServer.Admin
 
         public static async Task Main(string[] args)
         {
-            var configuration = GetConfiguration(args);
-
-            var exceptionLessServerUrl = configuration.GetValue<string>("Exceptionless:ServerUrl");
-            var exceptionLessApiKey = configuration.GetValue<string>("Exceptionless:ApiKey");
-            ExceptionlessClient.Default.Configuration.ServerUrl = exceptionLessServerUrl;
-            ExceptionlessClient.Default.Startup(exceptionLessApiKey);
-
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .WriteTo.Exceptionless(exceptionLessApiKey, exceptionLessServerUrl, additionalOperation: b => b.AddTags("OAuth"))
-                .CreateLogger();
+            var configuration = GetConfiguration(args);   
 
             try
             {
@@ -48,11 +37,11 @@ namespace Skoruba.Duende.IdentityServer.Admin
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly");
+                Console.WriteLine("Host terminated unexpectedly");
+                Console.WriteLine(ex.ToString());
             }
             finally
             {
-                Log.CloseAndFlush();
             }
         }
 
@@ -80,9 +69,7 @@ namespace Skoruba.Duende.IdentityServer.Admin
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("serilog.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"serilog.{environment}.json", optional: true, reloadOnChange: true);
+                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 
             if (isDevelopment)
             {
@@ -105,13 +92,11 @@ namespace Skoruba.Duende.IdentityServer.Admin
                  {
                      var configurationRoot = configApp.Build();
 
-                     configApp.AddJsonFile("serilog.json", optional: true, reloadOnChange: true);
                      configApp.AddJsonFile("identitydata.json", optional: true, reloadOnChange: true);
                      configApp.AddJsonFile("identityserverdata.json", optional: true, reloadOnChange: true);
 
                      var env = hostContext.HostingEnvironment;
 
-                     configApp.AddJsonFile($"serilog.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
                      configApp.AddJsonFile($"identitydata.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
                      configApp.AddJsonFile($"identityserverdata.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
@@ -125,16 +110,14 @@ namespace Skoruba.Duende.IdentityServer.Admin
                      configApp.AddEnvironmentVariables();
                      configApp.AddCommandLine(args);
                  })
+                .ConfigureLogging(logging => 
+                {
+                    logging.AddNLog("NLog.config");
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureKestrel(options => options.AddServerHeader = false);
                     webBuilder.UseStartup<Startup>();
-                })
-                .UseSerilog((hostContext, loggerConfig) =>
-                {
-                    loggerConfig
-                        .ReadFrom.Configuration(hostContext.Configuration)
-                        .Enrich.WithProperty("ApplicationName", hostContext.HostingEnvironment.ApplicationName);
                 });
     }
 }
