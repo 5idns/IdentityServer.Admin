@@ -18,14 +18,14 @@ namespace Skoruba.Duende.IdentityServer.Admin.Api
         {
             var configuration = GetConfiguration(args);
 
-            var exceptionLessServerUrl = configuration.GetValue<string>("ExceptionLess:ServerUrl");
-            var exceptionLessApiKey = configuration.GetValue<string>("ExceptionLess:ApiKey");
+            var exceptionLessServerUrl = configuration.GetValue<string>("Exceptionless:ServerUrl");
+            var exceptionLessApiKey = configuration.GetValue<string>("Exceptionless:ApiKey");
             ExceptionlessClient.Default.Configuration.ServerUrl = exceptionLessServerUrl;
             ExceptionlessClient.Default.Startup(exceptionLessApiKey);
 
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
-                .WriteTo.Exceptionless(b => b.AddTags("Api"))
+                .WriteTo.Exceptionless(exceptionLessApiKey, exceptionLessServerUrl, additionalOperation: b => b.AddTags("Api"))
                 .CreateLogger();
             try
             {
