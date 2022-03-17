@@ -28,7 +28,7 @@
                         <div class="card-body p-4 p-sm-5">
                             <h5 class="card-title">@Localizer["Title"]</h5>
                             <p class="card-text mb-3">See your growth and get consulting support!</p>
-                            @await Html.PartialAsync("_ValidationSummary")
+                            @*@await Html.PartialAsync("_ValidationSummary")*@
                             <form class="form-body" asp-route="Login">
                                 @if (Model.VisibleExternalProviders.Any())
                                 {
@@ -75,6 +75,7 @@
                                                 <input class="form-control radius-30 ps-5"
                                                placeholder="@Localizer[LoginPolicyResolutionLocalizer.GetUserNameLocalizationKey(Model.LoginResolutionPolicy)]"
                                                asp-for="Username" aria-label="Username" aria-describedby="input-username" autofocus>
+                                               <span asp-validation-for="Username" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -84,6 +85,7 @@
                                                 <input type="password" class="form-control radius-30 ps-5"
                                                placeholder="@Localizer["Password"]" aria-label="Password"
                                                aria-describedby="input-password" asp-for="Password" autocomplete="off">
+                                               <span asp-validation-for="Password" class="text-danger"></span>
                                             </div>
                                         </div>
                                         @if (Model.AllowRememberLogin)

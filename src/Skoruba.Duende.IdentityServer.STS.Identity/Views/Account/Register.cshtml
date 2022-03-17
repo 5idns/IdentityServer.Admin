@@ -18,7 +18,7 @@
                         <h5 class="card-title">@ViewData["Title"]</h5>
                         <p class="card-text mb-5">@Localizer["SubTitle"]</p>
                         <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                            @await Html.PartialAsync("_ValidationSummary")
+                            @*@await Html.PartialAsync("_ValidationSummary")*@
                             <div class="d-grid">
                                 <a class="btn btn-white radius-30" href="javascript:;">
                                     <span class="d-flex justify-content-center align-items-center">
@@ -28,7 +28,7 @@
                                 </a>
                             </div>
                             <div class="login-separater text-center mb-4">
-                                <span>OR SIGN UP WITH EMAIL</span>
+                                <span>@Localizer["SubTitle"]</span>
                                 <hr>
                             </div>
                             <div class="row g-3">
