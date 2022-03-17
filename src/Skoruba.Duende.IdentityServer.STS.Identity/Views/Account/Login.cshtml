@@ -29,7 +29,7 @@
                             <h5 class="card-title">@Localizer["Title"]</h5>
                             <p class="card-text mb-3">See your growth and get consulting support!</p>
                             @await Html.PartialAsync("_ValidationSummary")
-                            <form class="form-body">
+                            <form class="form-body" asp-route="Login">
                                 @if (Model.VisibleExternalProviders.Any())
                                 {
                                     @foreach (var provider in Model.VisibleExternalProviders)
