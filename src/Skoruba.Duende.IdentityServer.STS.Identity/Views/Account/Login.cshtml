@@ -31,9 +31,9 @@
                             <form class="form-body">
                                 @if (Model.VisibleExternalProviders.Any())
                                 {
-                                    <div class="d-grid">
-                                        @foreach (var provider in Model.VisibleExternalProviders)
-                                        {
+                                    @foreach (var provider in Model.VisibleExternalProviders)
+                                    {
+                                        <div class="d-grid">
                                             <a class="btn btn-white radius-30"
                                    asp-action="ExternalLogin"
                                    asp-route-provider="@provider.AuthenticationScheme"
@@ -43,8 +43,8 @@
                                                     <span>Sign in with @provider.DisplayName</span>
                                                 </span>
                                             </a>
-                                        }
-                                    </div>
+                                        </div>
+                                    }
                                 }
                                 @if (Model.EnableLocalLogin)
                                 {
