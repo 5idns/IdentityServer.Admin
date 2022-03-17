@@ -11,8 +11,11 @@ namespace Skoruba.Duende.IdentityServer.STS.Identity.ViewModels.Account
     public class LoginInputModel
     {
         [Required]
+        [MinLength(4)]
+        [MaxLength(16)]
         public string Username { get; set; }
         [Required]
+        [MinLength(6)]
         public string Password { get; set; }
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; }
