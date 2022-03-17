@@ -41,7 +41,7 @@
                                    asp-route-returnUrl="@Model.ReturnUrl">
                                                 <span class="d-flex justify-content-center align-items-center">
                                                     @*<img class="me-2" src="~/assets/images/icons/search.svg" width="16" alt="">*@
-                                                    <i class="lni lni-@provider.DisplayName"></i>
+                                                    <i class="lni lni-@provider.DisplayName.ToLower()"></i>
                                                     <span>Sign in with @provider.DisplayName</span>
                                                 </span>
                                             </a>
