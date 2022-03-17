@@ -34,7 +34,6 @@
                             <div class="row g-3">
                                 <div class="col-12 ">
                                     <label asp-for="UserName" class="form-label">@Localizer["UserName"]</label>
-                                    <label for="inputName" class="form-label">Name</label>
                                     <div class="ms-auto position-relative">
                                         <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-person-circle"></i></div>
                                         <input asp-for="UserName" class="form-control radius-30 ps-5" placeholder="Enter Name" />
@@ -67,7 +66,9 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-check form-switch">
-                                        <input id="agree" type="checkbox" class="form-check-input" />
+                                        <toggle-button>
+                                            <input id="agree" type="checkbox" class="form-check-input" checked="" />
+                                        </toggle-button>
                                         <label class="form-check-label" for="agree">@Localizer["I Agree to the Trems & Conditions"]</label>
                                     </div>
                                 </div>
@@ -79,7 +80,7 @@
                                 <div class="col-12">
                                     <p class="mb-0">
                                         @Localizer["Already have an account? "]
-                                        <a asp-action="Login" asp-controller="Account" value="login">@Localizer["Sign up here"]</a>
+                                        <a asp-action="Login" asp-controller="Account" value="login">@Localizer["Sign in here"]</a>
                                     </p>
                                 </div>
                             </div>
