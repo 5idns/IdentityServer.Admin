@@ -33,7 +33,7 @@
                                 {
                                     @foreach (var provider in Model.VisibleExternalProviders)
                                     {
-                                        <div class="d-grid">
+                                        <div class="d-grid mb-1">
                                             <a class="btn btn-white radius-30"
                                    asp-action="ExternalLogin"
                                    asp-route-provider="@provider.AuthenticationScheme"
