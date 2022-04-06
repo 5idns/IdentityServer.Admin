@@ -1,9 +1,11 @@
 ﻿using Duende.IdentityServer.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Skoruba.Duende.IdentityServer.Admin.UI.Areas.AdminUI.Controllers
 {
+    [Authorize]
     public class IngressController : BaseController
     {
         public IngressController(ILogger<IngressController> logger) : base(logger)
