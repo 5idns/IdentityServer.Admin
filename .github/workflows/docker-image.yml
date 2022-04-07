@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin/Dockerfile --tag OAuth:$(date +%s)
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin/Dockerfile --tag oauth:$(date +%s)
