@@ -15,8 +15,28 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build OAuth
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin/Dockerfile --tag oauth:$(date +%s)
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin/Dockerfile --tag registry.5idns.com/oauth:$(date +%s)
+    - name: Tag OAuth
+      run: docker tag registry.5idns.com/oauth:$(date +%s)  registry.5idns.com/oauth:latest
+    - name: Push OAuth
+      run: docker push registry.5idns.com/oauth:$(date +%s)
+    - name: Push OAuthLatest
+      run: docker push registry.5idns.com/oauth:latest
+      
     - name: Build SSO
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin.Api/Dockerfile --tag sso:$(date +%s)
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin.Api/Dockerfile --tag registry.5idns.com/sso:$(date +%s)
+    - name: Tag SSO
+      run: docker tag registry.5idns.com/sso:$(date +%s)  registry.5idns.com/sso:latest
+    - name: Push SSO
+      run: docker push registry.5idns.com/sso:$(date +%s)
+    - name: Push SSOLatest
+      run: docker push registry.5idns.com/sso:latest
+      
     - name: Build OApi
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.STS.Identity/Dockerfile --tag oapi:$(date +%s)
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.STS.Identity/Dockerfile --tag registry.5idns.com/oapi:$(date +%s)
+    - name: Tag OApi
+      run: docker tag registry.5idns.com/oapi:$(date +%s)  registry.5idns.com/oapi:latest
+    - name: Push OApi
+      run: docker push registry.5idns.com/oapi:$(date +%s)
+    - name: Push OApiLatest
+      run: docker push registry.5idns.com/oapi:latest
