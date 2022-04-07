@@ -14,5 +14,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Build OAuth
       run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin/Dockerfile --tag oauth:$(date +%s)
+    - name: Build SSO
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin.Api/Dockerfile --tag sso:$(date +%s)
+    - name: Build OApi
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.STS.Identity/Dockerfile --tag oapi:$(date +%s)
