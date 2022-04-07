@@ -15,28 +15,28 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build OAuth
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin/Dockerfile --tag registry.5idns.com/oauth:$(date +%s)
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin/Dockerfile --tag registry.5idns.com/oauth:$(github.job)
     - name: Tag OAuth
-      run: docker tag registry.5idns.com/oauth:$(date +%s)  registry.5idns.com/oauth:latest
+      run: docker tag registry.5idns.com/oauth:$(github.job)  registry.5idns.com/oauth:latest
     - name: Push OAuth
-      run: docker push registry.5idns.com/oauth:$(date +%s)
+      run: docker push registry.5idns.com/oauth:$(github.job)
     - name: Push OAuthLatest
       run: docker push registry.5idns.com/oauth:latest
       
     - name: Build SSO
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin.Api/Dockerfile --tag registry.5idns.com/sso:$(date +%s)
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin.Api/Dockerfile --tag registry.5idns.com/sso:$(github.job)
     - name: Tag SSO
-      run: docker tag registry.5idns.com/sso:$(date +%s)  registry.5idns.com/sso:latest
+      run: docker tag registry.5idns.com/sso:$(github.job)  registry.5idns.com/sso:latest
     - name: Push SSO
-      run: docker push registry.5idns.com/sso:$(date +%s)
+      run: docker push registry.5idns.com/sso:$(github.job)
     - name: Push SSOLatest
       run: docker push registry.5idns.com/sso:latest
       
     - name: Build OApi
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.STS.Identity/Dockerfile --tag registry.5idns.com/oapi:$(date +%s)
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.STS.Identity/Dockerfile --tag registry.5idns.com/oapi:$(github.job)
     - name: Tag OApi
-      run: docker tag registry.5idns.com/oapi:$(date +%s)  registry.5idns.com/oapi:latest
+      run: docker tag registry.5idns.com/oapi:$(github.job)  registry.5idns.com/oapi:latest
     - name: Push OApi
-      run: docker push registry.5idns.com/oapi:$(date +%s)
+      run: docker push registry.5idns.com/oapi:$(github.job)
     - name: Push OApiLatest
       run: docker push registry.5idns.com/oapi:latest
