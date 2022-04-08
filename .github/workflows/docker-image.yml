@@ -24,19 +24,19 @@ jobs:
       run: docker push registry.5idns.com/oauth:latest
       
     - name: Build SSO
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin.Api/Dockerfile --tag registry.5idns.com/sso:${{github.run_attempt}}
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.Admin.Api/Dockerfile --tag registry.5idns.com/oapi:${{github.run_attempt}}
     - name: Tag SSO
-      run: docker tag registry.5idns.com/sso:${{github.run_attempt}}  registry.5idns.com/sso:latest
+      run: docker tag registry.5idns.com/oapi:${{github.run_attempt}}  registry.5idns.com/oapi:latest
     - name: Push SSO
-      run: docker push registry.5idns.com/sso:${{github.run_attempt}}
+      run: docker push registry.5idns.com/oapi:${{github.run_attempt}}
     - name: Push SSOLatest
-      run: docker push registry.5idns.com/sso:latest
+      run: docker push registry.5idns.com/oapi:latest
       
     - name: Build OApi
-      run: docker build . --file src/Skoruba.Duende.IdentityServer.STS.Identity/Dockerfile --tag registry.5idns.com/oapi:${{github.run_attempt}}
+      run: docker build . --file src/Skoruba.Duende.IdentityServer.STS.Identity/Dockerfile --tag registry.5idns.com/sso:${{github.run_attempt}}
     - name: Tag OApi
-      run: docker tag registry.5idns.com/oapi:${{github.run_attempt}}  registry.5idns.com/oapi:latest
+      run: docker tag registry.5idns.com/sso:${{github.run_attempt}}  registry.5idns.com/sso:latest
     - name: Push OApi
-      run: docker push registry.5idns.com/oapi:${{github.run_attempt}}
+      run: docker push registry.5idns.com/sso:${{github.run_attempt}}
     - name: Push OApiLatest
-      run: docker push registry.5idns.com/oapi:latest
+      run: docker push registry.5idns.com/sso:latest
